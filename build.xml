@@ -1,0 +1,30 @@
+<project name="AdomdTests" default="compile" basedir=".">
+	<description>
+		build, test and report tests for adomd.net
+	</description>
+
+	<!--<property name="build" location="build"/>-->
+	<property name="build" location="AdomdTests\bin\Debug"/>
+
+	<target name="compile" description="compile the tests" depends="clean">
+		<tstamp/>
+		<mkdir dir="${build}"/> 
+		<exec osfamily="windows" executable="MSBuild">
+			<arg line="/property:OutputPath=${build}"/>
+			<arg line="AdomdTests.sln"/>
+			<arg line="/m"/>
+			<arg line="/noconsolelogger"/>
+		</exec>
+	</target>
+
+	<target name="tests" depends="compile"  description="run tests"> <!--depends="compile"-->
+		<exec osfamily="windows" executable="nunit-console" failonerror="true">
+			<arg line="${build}\AdomdTests.dll"/>	
+		</exec>
+	</target>
+
+	<target name="clean">
+		<delete dir="${build}"/>
+	</target>
+
+</project>
