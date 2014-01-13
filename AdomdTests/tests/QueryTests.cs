@@ -30,6 +30,23 @@ namespace AdomdTests
         }
 
         [Test]
+        public void MdxQueryToDelete() //TODO: REMOVE JUST FOR Jenkins test.
+        {
+            try
+            {
+                AdomdCommand command = new AdomdCommand(queryString, connection);
+                var obj = command.Execute();
+
+                Assert.AreNotEqual(obj, null);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.ToString());
+            }
+
+        }
+
+        [Test]
         [ExpectedException(typeof(AdomdErrorResponseException))]
         public void MdxQueryException()
         {
