@@ -29,7 +29,7 @@ namespace AdomdTests
 
         }
 
-        /*[Test]
+        [Test]
         public void MdxQueryToDelete() //TODO: REMOVE JUST FOR Jenkins test.
         {
             try
@@ -44,7 +44,7 @@ namespace AdomdTests
                 Assert.Fail(ex.ToString());
             }
 
-        }*/
+        }
 
         [Test]
         [ExpectedException(typeof(AdomdErrorResponseException))]
