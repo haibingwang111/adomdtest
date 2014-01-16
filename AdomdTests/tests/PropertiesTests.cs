@@ -45,6 +45,38 @@ namespace AdomdTests
         }
 
         [Test]
+        public void FetchPropertyID()
+        {
+            try
+            {
+                Member mbr = connection.Cubes["SteelWheelsSales"].Dimensions["Time"].Hierarchies["Time"].Levels["Years"].GetMembers()["2003"];
+                mbr.FetchAllProperties();
+                var property = mbr.Properties["ID"];
+                Assert.IsNotNullOrEmpty(property.ToString());
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.ToString());
+            }
+        }
+
+        [Test]
+        public void FetchPropertyName()
+        {
+            try
+            {
+                Member mbr = connection.Cubes["SteelWheelsSales"].Dimensions["Time"].Hierarchies["Time"].Levels["Years"].GetMembers()["2003"];
+                mbr.FetchAllProperties();
+                var property = mbr.Properties["NAME"];
+                Assert.IsNotNullOrEmpty(property.ToString());
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.ToString());
+            }
+        }
+
+        [Test]
         public void FetchPropertyMemberKey()
         {
             try
@@ -59,6 +91,7 @@ namespace AdomdTests
                 Assert.Fail(ex.ToString());
             }
         }
+
 
         [Test]
         public void FetchPropertyMemberOrdinal()
