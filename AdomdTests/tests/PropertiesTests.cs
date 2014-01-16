@@ -45,6 +45,7 @@ namespace AdomdTests
         }
 
         [Test]
+        [Ignore]
         public void FetchPropertyID()
         {
             try
@@ -61,6 +62,7 @@ namespace AdomdTests
         }
 
         [Test]
+        [Ignore]
         public void FetchPropertyName()
         {
             try
