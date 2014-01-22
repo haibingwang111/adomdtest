@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,118 +15,170 @@ namespace AdomdTests
         [Test]
         public void FetchAllProperties()
         {
-            foreach (var cube in connection.Cubes)
+            if (connection != null && connection.State != ConnectionState.Closed)
             {
-                var dims = cube.Dimensions;
-                foreach (var dim in dims)
+                foreach (var cube in connection.Cubes)
                 {
-                    var hies = dim.Hierarchies;
-                    foreach (var hie in hies)
+                    var dims = cube.Dimensions;
+                    foreach (var dim in dims)
                     {
-                        var lvls = hie.Levels;
-                        foreach (var lvl in lvls)
+                        var hies = dim.Hierarchies;
+                        foreach (var hie in hies)
                         {
-                            var mems = lvl.GetMembers(0, 2);
-                            foreach (var mem in mems)
+                            var lvls = hie.Levels;
+                            foreach (var lvl in lvls)
                             {
-                                try
+                                var mems = lvl.GetMembers(0, 2);
+                                foreach (var mem in mems)
                                 {
-                                    mem.FetchAllProperties();
-                                    Assert.IsTrue(true);
-                                }
-                                catch (Exception ex)
-                                {
-                                    Assert.Fail(ex.ToString());
+                                    try
+                                    {
+                                        mem.FetchAllProperties();
+                                        Assert.IsTrue(true);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Assert.Fail(ex.ToString());
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
+            else
+                Assert.Inconclusive("No connection found for test");
         }
 
         [Test]
         [Ignore]
         public void FetchPropertyID()
         {
-            try
+            if (connection != null && connection.State != ConnectionState.Closed)
             {
-                Member mbr = connection.Cubes["SteelWheelsSales"].Dimensions["Time"].Hierarchies["Time"].Levels["Years"].GetMembers()["2003"];
-                mbr.FetchAllProperties();
-                var property = mbr.Properties["ID"];
-                Assert.IsNotNullOrEmpty(property.ToString());
+                try
+                {
+                    Member mbr = connection.Cubes["SteelWheelsSales"].Dimensions["Time"].Hierarchies["Time"].Levels["Years"].GetMembers()["2003"];
+                    mbr.FetchAllProperties();
+                    var property = mbr.Properties["ID"];
+                    Assert.IsNotNullOrEmpty(property.ToString());
+                }
+                catch (Exception ex)
+                {
+                    Assert.Fail(ex.ToString());
+                }
             }
-            catch (Exception ex)
+            else
+                Assert.Inconclusive("No connection found for test");
+        }
+
+        [Test]
+        public void IntrinsicPropertyName()
+        {
+            if (connection != null && connection.State != ConnectionState.Closed)
             {
-                Assert.Fail(ex.ToString());
+                try
+                {
+                    Member mbr = connection.Cubes["SteelWheelsSales"].Dimensions["Time"].Hierarchies["Time"].Levels["Years"].GetMembers()["2003"];
+
+                    String name = mbr.Name;
+
+                    Assert.IsNotNullOrEmpty(name);
+                }
+                catch (Exception ex)
+                {
+                    Assert.Fail(ex.ToString());
+                }
             }
+            else
+                Assert.Inconclusive("No connection found for test");
         }
 
         [Test]
         [Ignore]
-        public void FetchPropertyName()
+        public void IntrinsicPropertyDescription()
         {
-            try
+            if (connection != null && connection.State != ConnectionState.Closed)
             {
-                Member mbr = connection.Cubes["SteelWheelsSales"].Dimensions["Time"].Hierarchies["Time"].Levels["Years"].GetMembers()["2003"];
-                mbr.FetchAllProperties();
-                var property = mbr.Properties["NAME"];
-                Assert.IsNotNullOrEmpty(property.ToString());
+                try
+                {
+                    Member mbr = connection.Cubes["SteelWheelsSales"].Dimensions["Time"].Hierarchies["Time"].Levels["Years"].GetMembers()["2003"];
+
+                    String description = mbr.Description;
+
+                    Assert.IsNotNullOrEmpty(description);
+                }
+                catch (Exception ex)
+                {
+                    Assert.Fail(ex.ToString());
+                }
             }
-            catch (Exception ex)
-            {
-                Assert.Fail(ex.ToString());
-            }
+            else
+                Assert.Inconclusive("No connection found for test");
         }
 
         [Test]
         public void FetchPropertyMemberKey()
         {
-            try
+            if (connection != null && connection.State != ConnectionState.Closed)
             {
-                Member mbr = connection.Cubes["SteelWheelsSales"].Dimensions["Time"].Hierarchies["Time"].Levels["Years"].GetMembers()["2003"];
-                mbr.FetchAllProperties();
-                var property = mbr.Properties["MEMBER_KEY"];
-                Assert.IsNotNullOrEmpty(property.ToString());
+                try
+                {
+                    Member mbr = connection.Cubes["SteelWheelsSales"].Dimensions["Time"].Hierarchies["Time"].Levels["Years"].GetMembers()["2003"];
+                    mbr.FetchAllProperties();
+                    var property = mbr.Properties["MEMBER_KEY"];
+                    Assert.IsNotNullOrEmpty(property.ToString());
+                }
+                catch (Exception ex)
+                {
+                    Assert.Fail(ex.ToString());
+                }
             }
-            catch (Exception ex)
-            {
-                Assert.Fail(ex.ToString());
-            }
+            else
+                Assert.Inconclusive("No connection found for test");
         }
 
 
         [Test]
         public void FetchPropertyMemberOrdinal()
         {
-            try
+            if (connection != null && connection.State != ConnectionState.Closed)
             {
-                Member mbr = connection.Cubes["SteelWheelsSales"].Dimensions["Time"].Hierarchies["Time"].Levels["Years"].GetMembers()["2003"];
-                mbr.FetchAllProperties();
-                var property = mbr.Properties["MEMBER_ORDINAL"];
-                Assert.IsNotNullOrEmpty(property.ToString());
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail(ex.ToString());
-            }
+                try
+                {
+                    Member mbr = connection.Cubes["SteelWheelsSales"].Dimensions["Time"].Hierarchies["Time"].Levels["Years"].GetMembers()["2003"];
+                    mbr.FetchAllProperties();
+                    var property = mbr.Properties["MEMBER_ORDINAL"];
+                    Assert.IsNotNullOrEmpty(property.ToString());
+                }
+                catch (Exception ex)
+                {
+                    Assert.Fail(ex.ToString());
+                }
+             }
+            else
+                Assert.Inconclusive("No connection found for test");
         }
 
         [Test]
-        /*[Ignore]*/
         public void FetchPropertyExpression()
         {
-            try
+            if (connection != null && connection.State != ConnectionState.Closed)
             {
-                Member mbr = connection.Cubes["SteelWheelsSales"].Dimensions["Time"].Hierarchies["Time"].Levels["Years"].GetMembers()["2003"];
-                mbr.FetchAllProperties();
-                var property = mbr.Properties["EXPRESSION"];
-                Assert.IsNotNullOrEmpty(property.ToString());
+                try
+                {
+                    Member mbr = connection.Cubes["SteelWheelsSales"].Dimensions["Time"].Hierarchies["Time"].Levels["Years"].GetMembers()["2003"];
+                    mbr.FetchAllProperties();
+                    var property = mbr.Properties["EXPRESSION"];
+                    Assert.IsNotNullOrEmpty(property.ToString());
+                }
+                catch (Exception ex)
+                {
+                    Assert.Fail(ex.ToString());
+                }
             }
-            catch (Exception ex)
-            {
-                Assert.Fail(ex.ToString());
-            }
+            else
+                Assert.Inconclusive("No connection found for test");
         }
     }
 }

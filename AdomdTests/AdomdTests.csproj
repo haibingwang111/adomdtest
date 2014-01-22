@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="tests\CubeTests.cs" />
     <Compile Include="tests\QueryTests.cs" />
     <Compile Include="BaseTest.cs" />
     <Compile Include="ConnectionTest.cs" />

@@ -12,7 +12,7 @@ namespace AdomdTests
     public class BaseTest
     {
         private String _connString =
-           @"Data Source=http://localhost:8089/pentaho/Xmla?userid=admin&password=password; Initial Catalog=SteelWheels; DataSourceInfo=Pentaho; User Id =admin; Password=password";
+           @"Data Source=http://localhost:8081/pentaho/Xmla?userid=admin&password=password; Initial Catalog=SteelWheels; DataSourceInfo=Pentaho; User Id =admin; Password=password";
         
         public String connectionString
         {
