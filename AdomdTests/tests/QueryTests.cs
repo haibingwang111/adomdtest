@@ -13,6 +13,13 @@ namespace AdomdTests
     [TestFixture]
     public class QueryTests : QueryTest
     {
+
+        public QueryTests()
+        {
+            //connectionString = @"Data Source=http://es2.pentaho.com:8081/pentaho/Xmla?userid=admin&password=password; Initial Catalog=mfv40m_payer_product2_4; DataSourceInfo=Pentaho; User Id =admin; Password=password";
+            //queryString = "select [Gender].AllMembers on rows, [Measures].[Days] on columns from [combined claims]";
+        }
+
         [Test]
         public void MdxQuery()
         {
@@ -72,10 +79,12 @@ namespace AdomdTests
         {
             if (connection != null && connection.State != ConnectionState.Closed)
             {
+                
                 try
                 {
                     AdomdCommand command = new AdomdCommand(queryString, connection);
                     var result = command.ExecuteXmlReader();
+                    System.Xml.Linq.XDocument.Parse(result.ReadOuterXml().ToString());
                     //String str = System.Xml.Linq.XDocument.Parse(result.ReadOuterXml()).ToString();
 
                     Assert.IsNotNull(result);

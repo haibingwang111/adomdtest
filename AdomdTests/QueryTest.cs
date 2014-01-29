@@ -8,7 +8,8 @@ namespace AdomdTests
 {
     public class QueryTest : ConnectionTest
     {
-        private String _query = "SELECT {[Measures].[Sales], [Measures].[Quantity]} ON COLUMNS, NON EMPTY [Time].Children ON ROWS FROM [SteelWheelsSales]";
+        private String _query = "select [Gender].AllMembers on rows, [Measures].[Days] on columns from [combined claims]";
+            //"SELECT {[Measures].[Sales], [Measures].[Quantity]} ON COLUMNS, NON EMPTY [Time].Children ON ROWS FROM [SteelWheelsSales]";
     
         public String queryString
         {
