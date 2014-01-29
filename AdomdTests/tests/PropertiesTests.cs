@@ -12,6 +12,12 @@ namespace AdomdTests
     [TestFixture]
     public class PropertiesTests : ConnectionTest
     {
+        public PropertiesTests()
+        {
+            connectionString = 
+                @"Data Source=http://192.168.123.35:8080/pentaho/Xmla?userid=admin&password=password; Initial Catalog=SteelWheels; DataSourceInfo=Pentaho; User Id =admin; Password=password";
+        }
+
         [Test]
         public void FetchAllProperties()
         {
