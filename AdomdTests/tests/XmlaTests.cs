@@ -15,6 +15,7 @@ namespace AdomdTests
         private String _soapEnvelope;
 
         [Test]
+        [Ignore]
         public void Connection()
         {
             WebResponse response = null;
