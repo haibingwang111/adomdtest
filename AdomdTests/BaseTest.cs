@@ -12,8 +12,13 @@ namespace AdomdTests
     public class BaseTest
     {
         private String _connString =
-           @"Data Source=http://localhost:8081/pentaho/Xmla?userid=admin&password=password; Initial Catalog=SteelWheels; DataSourceInfo=Pentaho; User Id =admin; Password=password";
+           @"Data Source=http://es2.pentaho.com:8081/pentaho/Xmla?userid=admin&password=password; Initial Catalog=mfv40m_payer_product2_4; DataSourceInfo=Pentaho; User Id =admin; Password=password";
+
+            //@"Data Source=http://192.168.123.35:8080/pentaho/Xmla?userid=admin&password=password; Initial Catalog=SteelWheels; DataSourceInfo=Pentaho; User Id =admin; Password=password";
+
         
+
+
         public String connectionString
         {
             get
