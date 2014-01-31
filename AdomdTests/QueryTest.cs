@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AdomdTests.utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,19 +9,22 @@ namespace AdomdTests
 {
     public class QueryTest : ConnectionTest
     {
-        private String _query = "select [Gender].AllMembers on rows, [Measures].[Days] on columns from [combined claims]";
-            //"SELECT {[Measures].[Sales], [Measures].[Quantity]} ON COLUMNS, NON EMPTY [Time].Children ON ROWS FROM [SteelWheelsSales]";
-    
-        public String queryString
+        public QueryTest()
         {
-            get
+            Properties prop = new Properties("connection.properties");
+            bool exit = false;
+            int count = 1;
+            String query;
+            while(!exit)
             {
-                return _query;
-            }
-            set
-            {
-                _query = value;
+                query = prop.get("queryString" + count);
+                if (!String.IsNullOrEmpty(query))
+                    queries.Add(query);
+                else exit = true;
+                count++;
             }
         }
+
+        public List<String> queries = new List<string>();
     }
 }

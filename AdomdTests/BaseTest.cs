@@ -1,4 +1,5 @@
-﻿using Microsoft.AnalysisServices.AdomdClient;
+﻿using AdomdTests.utils;
+using Microsoft.AnalysisServices.AdomdClient;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,13 @@ namespace AdomdTests
     
     public class BaseTest
     {
+
+        public BaseTest()
+        {
+            Properties prop = new Properties("connection.properties");
+            _connString = prop.get("connectionString");
+        } 
+
         private String _connString =
            @"Data Source=http://es2.pentaho.com:8081/pentaho/Xmla?userid=admin&password=password; Initial Catalog=mfv40m_payer_product2_4; DataSourceInfo=Pentaho; User Id =admin; Password=password";
 

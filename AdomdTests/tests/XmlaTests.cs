@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace AdomdTests
 {
-    [TestFixture]
+    /*[TestFixture]*/
     public class XmlaTests : BaseTest
     {
         private String _soapEnvelope;
 
-        [Test]
-        [Ignore]
+        /*[Test]
+        [Ignore]*/
         public void Connection()
         {
             WebResponse response = null;

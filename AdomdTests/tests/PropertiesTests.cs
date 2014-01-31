@@ -1,4 +1,5 @@
-﻿using Microsoft.AnalysisServices.AdomdClient;
+﻿using AdomdTests.utils;
+using Microsoft.AnalysisServices.AdomdClient;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -14,13 +15,19 @@ namespace AdomdTests
     {
         public PropertiesTests()
         {
-            connectionString = 
-                @"Data Source=http://192.168.123.35:8080/pentaho/Xmla?userid=admin&password=password; Initial Catalog=SteelWheels; DataSourceInfo=Pentaho; User Id =admin; Password=password";
+            Properties prop = new Properties("connection.properties");
+            String fetchStr = prop.get("fetchProperties");
+
+            fetchProperties = !fetchStr.Equals("All")?Int32.Parse(fetchStr):-1;
         }
+
+        private int fetchProperties;
 
         [Test]
         public void FetchAllProperties()
         {
+            int count = 0;
+
             if (connection != null && connection.State != ConnectionState.Closed)
             {
                 foreach (var cube in connection.Cubes)
@@ -37,10 +44,13 @@ namespace AdomdTests
                                 var mems = lvl.GetMembers(0, 2);
                                 foreach (var mem in mems)
                                 {
+                                    count++;
                                     try
                                     {
                                         mem.FetchAllProperties();
                                         Assert.IsTrue(true);
+                                        if (count == fetchProperties)
+                                            return;
                                     }
                                     catch (Exception ex)
                                     {
@@ -62,16 +72,35 @@ namespace AdomdTests
         {
             if (connection != null && connection.State != ConnectionState.Closed)
             {
-                try
+                foreach (var cube in connection.Cubes)
                 {
-                    Member mbr = connection.Cubes["SteelWheelsSales"].Dimensions["Time"].Hierarchies["Time"].Levels["Years"].GetMembers()["2003"];
-                    mbr.FetchAllProperties();
-                    var property = mbr.Properties["ID"];
-                    Assert.IsNotNullOrEmpty(property.ToString());
-                }
-                catch (Exception ex)
-                {
-                    Assert.Fail(ex.ToString());
+                    var dims = cube.Dimensions;
+                    foreach (var dim in dims)
+                    {
+                        var hies = dim.Hierarchies;
+                        foreach (var hie in hies)
+                        {
+                            var lvls = hie.Levels;
+                            foreach (var lvl in lvls)
+                            {
+                                var mems = lvl.GetMembers(0, 2);
+                                foreach (var mem in mems)
+                                {
+                                    try
+                                    {
+                                        mem.FetchAllProperties();
+                                        var property = mem.Properties["ID"];
+                                        Assert.IsNotNullOrEmpty(property.ToString());
+                                        return;
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Assert.Fail(ex.ToString());
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
             else
@@ -83,17 +112,34 @@ namespace AdomdTests
         {
             if (connection != null && connection.State != ConnectionState.Closed)
             {
-                try
+                foreach (var cube in connection.Cubes)
                 {
-                    Member mbr = connection.Cubes["SteelWheelsSales"].Dimensions["Time"].Hierarchies["Time"].Levels["Years"].GetMembers()["2003"];
-
-                    String name = mbr.Name;
-
-                    Assert.IsNotNullOrEmpty(name);
-                }
-                catch (Exception ex)
-                {
-                    Assert.Fail(ex.ToString());
+                    var dims = cube.Dimensions;
+                    foreach (var dim in dims)
+                    {
+                        var hies = dim.Hierarchies;
+                        foreach (var hie in hies)
+                        {
+                            var lvls = hie.Levels;
+                            foreach (var lvl in lvls)
+                            {
+                                var mems = lvl.GetMembers(0, 2);
+                                foreach (var mem in mems)
+                                {
+                                    try
+                                    {
+                                        String name = mem.Name;
+                                        Assert.IsNotNullOrEmpty(name);
+                                        return;
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Assert.Fail(ex.ToString());
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
             else
@@ -106,17 +152,34 @@ namespace AdomdTests
         {
             if (connection != null && connection.State != ConnectionState.Closed)
             {
-                try
+                foreach (var cube in connection.Cubes)
                 {
-                    Member mbr = connection.Cubes["SteelWheelsSales"].Dimensions["Time"].Hierarchies["Time"].Levels["Years"].GetMembers()["2003"];
-
-                    String description = mbr.Description;
-
-                    Assert.IsNotNullOrEmpty(description);
-                }
-                catch (Exception ex)
-                {
-                    Assert.Fail(ex.ToString());
+                    var dims = cube.Dimensions;
+                    foreach (var dim in dims)
+                    {
+                        var hies = dim.Hierarchies;
+                        foreach (var hie in hies)
+                        {
+                            var lvls = hie.Levels;
+                            foreach (var lvl in lvls)
+                            {
+                                var mems = lvl.GetMembers(0, 2);
+                                foreach (var mem in mems)
+                                {
+                                    try
+                                    {
+                                        String description = mem.Description;
+                                        Assert.IsNotNullOrEmpty(description);
+                                        return;
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Assert.Fail(ex.ToString());
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
             else
@@ -128,16 +191,35 @@ namespace AdomdTests
         {
             if (connection != null && connection.State != ConnectionState.Closed)
             {
-                try
+                foreach (var cube in connection.Cubes)
                 {
-                    Member mbr = connection.Cubes["SteelWheelsSales"].Dimensions["Time"].Hierarchies["Time"].Levels["Years"].GetMembers()["2003"];
-                    mbr.FetchAllProperties();
-                    var property = mbr.Properties["MEMBER_KEY"];
-                    Assert.IsNotNullOrEmpty(property.ToString());
-                }
-                catch (Exception ex)
-                {
-                    Assert.Fail(ex.ToString());
+                    var dims = cube.Dimensions;
+                    foreach (var dim in dims)
+                    {
+                        var hies = dim.Hierarchies;
+                        foreach (var hie in hies)
+                        {
+                            var lvls = hie.Levels;
+                            foreach (var lvl in lvls)
+                            {
+                                var mems = lvl.GetMembers(0, 2);
+                                foreach (var mem in mems)
+                                {
+                                    try
+                                    {
+                                        mem.FetchAllProperties();
+                                        var property = mem.Properties["MEMBER_KEY"];
+                                        Assert.IsNotNullOrEmpty(property.ToString());
+                                        return;
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Assert.Fail(ex.ToString());
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
             else
@@ -150,16 +232,35 @@ namespace AdomdTests
         {
             if (connection != null && connection.State != ConnectionState.Closed)
             {
-                try
+                foreach (var cube in connection.Cubes)
                 {
-                    Member mbr = connection.Cubes["SteelWheelsSales"].Dimensions["Time"].Hierarchies["Time"].Levels["Years"].GetMembers()["2003"];
-                    mbr.FetchAllProperties();
-                    var property = mbr.Properties["MEMBER_ORDINAL"];
-                    Assert.IsNotNullOrEmpty(property.ToString());
-                }
-                catch (Exception ex)
-                {
-                    Assert.Fail(ex.ToString());
+                    var dims = cube.Dimensions;
+                    foreach (var dim in dims)
+                    {
+                        var hies = dim.Hierarchies;
+                        foreach (var hie in hies)
+                        {
+                            var lvls = hie.Levels;
+                            foreach (var lvl in lvls)
+                            {
+                                var mems = lvl.GetMembers(0, 2);
+                                foreach (var mem in mems)
+                                {
+                                    try
+                                    {
+                                        mem.FetchAllProperties();
+                                        var property = mem.Properties["MEMBER_ORDINAL"];
+                                        Assert.IsNotNullOrEmpty(property.ToString());
+                                        return;
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Assert.Fail(ex.ToString());
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
              }
             else
@@ -171,16 +272,35 @@ namespace AdomdTests
         {
             if (connection != null && connection.State != ConnectionState.Closed)
             {
-                try
+                foreach (var cube in connection.Cubes)
                 {
-                    Member mbr = connection.Cubes["SteelWheelsSales"].Dimensions["Time"].Hierarchies["Time"].Levels["Years"].GetMembers()["2003"];
-                    mbr.FetchAllProperties();
-                    var property = mbr.Properties["EXPRESSION"];
-                    Assert.IsNotNullOrEmpty(property.ToString());
-                }
-                catch (Exception ex)
-                {
-                    Assert.Fail(ex.ToString());
+                    var dims = cube.Dimensions;
+                    foreach (var dim in dims)
+                    {
+                        var hies = dim.Hierarchies;
+                        foreach (var hie in hies)
+                        {
+                            var lvls = hie.Levels;
+                            foreach (var lvl in lvls)
+                            {
+                                var mems = lvl.GetMembers(0, 2);
+                                foreach (var mem in mems)
+                                {
+                                    try
+                                    {
+                                        mem.FetchAllProperties();
+                                        var property = mem.Properties["EXPRESSION"];
+                                        Assert.IsNotNullOrEmpty(property.ToString());
+                                        return;
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Assert.Fail(ex.ToString());
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
             else
