@@ -16,6 +16,8 @@ namespace AdomdTests
         {
             try
             {
+                Console.WriteLine("Testing Connection");
+
                 AdomdConnection conn = new AdomdConnection(connectionString);
                 conn.Open();
                 Assert.AreEqual(System.Data.ConnectionState.Open, conn.State);
@@ -31,6 +33,7 @@ namespace AdomdTests
         [ExpectedException(typeof(ArgumentException))]
         public void ConnectionException()
         {
+            Console.WriteLine("Testing Connection Exception");
             new AdomdConnection("");
         }
 
@@ -39,6 +42,8 @@ namespace AdomdTests
         {
             try
             {
+                Console.WriteLine("Testing Disconnect");
+
                 AdomdConnection conn = new AdomdConnection(connectionString);
                 conn.Open();
                 Assert.AreEqual(System.Data.ConnectionState.Open, conn.State);
