@@ -25,5 +25,38 @@ namespace AdomdTests
             else
                 Assert.Inconclusive("No connection found for test");
         }
+
+        [Test]
+        public void GetSchemaObjectTypeHierchy()
+        {
+            if (connection != null && connection.State != ConnectionState.Closed)
+            {
+                var cubes = connection.Cubes;
+
+                if (cubes.Count > 0)
+                {
+                    var dimensions = cubes[0].Dimensions;
+
+                    if (dimensions.Count > 0)
+                    {
+                        foreach(Dimension dim in dimensions)
+                        {
+                            var hierchies = dim.Hierarchies;
+
+                            foreach (Hierarchy hier in hierchies)
+                            {
+                                Console.WriteLine("Testing Hierchy " + hier.UniqueName);
+                                cubes[0].GetSchemaObject(SchemaObjectType.ObjectTypeHierarchy, hier.UniqueName);
+                            }
+                        }
+                        
+                    }
+                }
+            }
+            else
+            {
+                Assert.Inconclusive("No connection found for test");
+            }
+        }
     }
 }
