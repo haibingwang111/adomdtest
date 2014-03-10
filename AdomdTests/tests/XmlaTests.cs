@@ -53,14 +53,15 @@ namespace AdomdTests
 
         private HttpWebRequest CreateWebRequest()
         {
-            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(connectionString);
+            /*HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(connectionString);
 
             webRequest.Headers.Add("Version", "Sequence=\"300\" xmlns=\"http://schemas.microsoft.com/analysisservices/2003/engine/2\"");
             webRequest.ContentType = "text/xml;charset=\"utf-8\"";
             webRequest.Accept = "text/xml";
             webRequest.Method = "POST";
 
-            return webRequest;
+            return webRequest;*/
+            return null;
         }
     }
 }

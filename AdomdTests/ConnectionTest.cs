@@ -1,6 +1,7 @@
 ﻿using Microsoft.AnalysisServices.AdomdClient;
 using NUnit.Framework;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,23 +11,32 @@ namespace AdomdTests
 {
     public class ConnectionTest : BaseTest
     {
-        
-
-        protected AdomdConnection connection;
+        protected Hashtable adoConnections = new Hashtable();
 
         [SetUp]
-        public virtual void initConnection()
+        public virtual void initConnections()
         {
-            if (connection == null ||
-                connection.State == System.Data.ConnectionState.Closed)
+            if (adoConnections.Count == 0)
             {
-                try
+                foreach (DictionaryEntry entry in connectionsStr)
                 {
-                    connection = new AdomdConnection(connectionString);
-                    connection.Open();
+                    adoConnections.Add(entry.Key, new AdomdConnection((String)entry.Value));
                 }
-                catch
-                { }
+            }
+
+            foreach (DictionaryEntry entry in adoConnections)
+            {
+                AdomdConnection conn = (AdomdConnection)entry.Value;
+
+                if (conn == null || conn.State == System.Data.ConnectionState.Closed)
+                {
+                    try
+                    {
+                        conn.Open();
+                    }
+                    catch
+                    { }
+                }
             }
         }
     }

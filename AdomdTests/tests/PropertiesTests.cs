@@ -2,6 +2,7 @@
 using Microsoft.AnalysisServices.AdomdClient;
 using NUnit.Framework;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -26,285 +27,324 @@ namespace AdomdTests
         [Test]
         public void FetchAllProperties()
         {
-            int count = 0;
-
-            if (connection != null && connection.State != ConnectionState.Closed)
+            foreach (DictionaryEntry entry in adoConnections)
             {
-                foreach (var cube in connection.Cubes)
+                AdomdConnection connection = (AdomdConnection)entry.Value;
+                int count = 0;
+
+                if (connection != null && connection.State != ConnectionState.Closed)
                 {
-                    var dims = cube.Dimensions;
-                    foreach (var dim in dims)
+                    foreach (var cube in connection.Cubes)
                     {
-                        var hies = dim.Hierarchies;
-                        foreach (var hie in hies)
+                        var dims = cube.Dimensions;
+                        foreach (var dim in dims)
                         {
-                            var lvls = hie.Levels;
-                            foreach (var lvl in lvls)
+                            var hies = dim.Hierarchies;
+                            foreach (var hie in hies)
                             {
-                                var mems = lvl.GetMembers(0, 2);
-                                foreach (var mem in mems)
+                                var lvls = hie.Levels;
+                                foreach (var lvl in lvls)
                                 {
-                                    count++;
-                                    try
+                                    var mems = lvl.GetMembers(0, 2);
+                                    foreach (var mem in mems)
                                     {
-                                        mem.FetchAllProperties();
-                                        Assert.IsTrue(true);
-                                        if (count == fetchProperties)
+                                        count++;
+                                        try
+                                        {
+                                            mem.FetchAllProperties();
+                                            Assert.IsTrue(true);
+                                            if (count == fetchProperties)
+                                                return;
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Assert.Fail(ex.ToString());
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                    Assert.Inconclusive("No connection found for test " +
+                                connection.ConnectionString);
+            }
+        }
+
+        //[Test]
+        //[Ignore]
+        /*public void FetchPropertyID()
+        {
+            foreach (DictionaryEntry entry in adoConnections)
+            {
+                AdomdConnection connection = (AdomdConnection)entry.Value;
+                if (connection != null && connection.State != ConnectionState.Closed)
+                {
+                    foreach (var cube in connection.Cubes)
+                    {
+                        var dims = cube.Dimensions;
+                        foreach (var dim in dims)
+                        {
+                            var hies = dim.Hierarchies;
+                            foreach (var hie in hies)
+                            {
+                                var lvls = hie.Levels;
+                                foreach (var lvl in lvls)
+                                {
+                                    var mems = lvl.GetMembers(0, 2);
+                                    foreach (var mem in mems)
+                                    {
+                                        try
+                                        {
+                                            mem.FetchAllProperties();
+                                            var property = mem.Properties["ID"];
+                                            Assert.IsNotNullOrEmpty(property.ToString());
                                             return;
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        Assert.Fail(ex.ToString());
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Assert.Fail(ex.ToString());
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
+                else
+                    Assert.Inconclusive("No connection found for test " +
+                                    connection.ConnectionString);
             }
-            else
-                Assert.Inconclusive("No connection found for test");
+        }*/
+
+        [Test]
+        public void FetchPropertyName()
+        {
+            foreach (DictionaryEntry entry in adoConnections)
+            {
+                AdomdConnection connection = (AdomdConnection)entry.Value;
+                if (connection != null && connection.State != ConnectionState.Closed)
+                {
+                    foreach (var cube in connection.Cubes)
+                    {
+                        var dims = cube.Dimensions;
+                        foreach (var dim in dims)
+                        {
+                            var hies = dim.Hierarchies;
+                            foreach (var hie in hies)
+                            {
+                                var lvls = hie.Levels;
+                                foreach (var lvl in lvls)
+                                {
+                                    var mems = lvl.GetMembers(0, 2);
+                                    foreach (var mem in mems)
+                                    {
+                                        try
+                                        {
+                                            String name = mem.Name;
+                                            Assert.IsNotNullOrEmpty(name);
+                                            return;
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Assert.Fail(ex.ToString());
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                    Assert.Inconclusive("No connection found for test " +
+                                    connection.ConnectionString);
+            }
         }
 
         [Test]
-        [Ignore]
-        public void FetchPropertyID()
+        //[Ignore]
+        public void FetchPropertyDescription()
         {
-            if (connection != null && connection.State != ConnectionState.Closed)
+            foreach (DictionaryEntry entry in adoConnections)
             {
-                foreach (var cube in connection.Cubes)
+                AdomdConnection connection = (AdomdConnection)entry.Value;
+                if (connection != null && connection.State != ConnectionState.Closed)
                 {
-                    var dims = cube.Dimensions;
-                    foreach (var dim in dims)
+                    foreach (var cube in connection.Cubes)
                     {
-                        var hies = dim.Hierarchies;
-                        foreach (var hie in hies)
+                        var dims = cube.Dimensions;
+                        foreach (var dim in dims)
                         {
-                            var lvls = hie.Levels;
-                            foreach (var lvl in lvls)
+                            var hies = dim.Hierarchies;
+                            foreach (var hie in hies)
                             {
-                                var mems = lvl.GetMembers(0, 2);
-                                foreach (var mem in mems)
+                                var lvls = hie.Levels;
+                                foreach (var lvl in lvls)
                                 {
-                                    try
+                                    var mems = lvl.GetMembers(0, 2);
+                                    foreach (var mem in mems)
                                     {
-                                        mem.FetchAllProperties();
-                                        var property = mem.Properties["ID"];
-                                        Assert.IsNotNullOrEmpty(property.ToString());
-                                        return;
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        Assert.Fail(ex.ToString());
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            else
-                Assert.Inconclusive("No connection found for test");
-        }
+                                        try
+                                        {
+                                            mem.FetchAllProperties();
+                                            var property = mem.Properties["DESCRIPTION"];
+                                            Assert.IsNotNullOrEmpty(property.ToString());
 
-        [Test]
-        public void IntrinsicPropertyName()
-        {
-            if (connection != null && connection.State != ConnectionState.Closed)
-            {
-                foreach (var cube in connection.Cubes)
-                {
-                    var dims = cube.Dimensions;
-                    foreach (var dim in dims)
-                    {
-                        var hies = dim.Hierarchies;
-                        foreach (var hie in hies)
-                        {
-                            var lvls = hie.Levels;
-                            foreach (var lvl in lvls)
-                            {
-                                var mems = lvl.GetMembers(0, 2);
-                                foreach (var mem in mems)
-                                {
-                                    try
-                                    {
-                                        String name = mem.Name;
-                                        Assert.IsNotNullOrEmpty(name);
-                                        return;
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        Assert.Fail(ex.ToString());
+                                            /*String description = mem.Description;
+                                            Assert.IsNotNullOrEmpty(description);*/
+                                            return;
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Assert.Fail(ex.ToString());
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
+                else
+                    Assert.Inconclusive("No connection found for test " +
+                                    connection.ConnectionString);
             }
-            else
-                Assert.Inconclusive("No connection found for test");
-        }
-
-        [Test]
-        [Ignore]
-        public void IntrinsicPropertyDescription()
-        {
-            if (connection != null && connection.State != ConnectionState.Closed)
-            {
-                foreach (var cube in connection.Cubes)
-                {
-                    var dims = cube.Dimensions;
-                    foreach (var dim in dims)
-                    {
-                        var hies = dim.Hierarchies;
-                        foreach (var hie in hies)
-                        {
-                            var lvls = hie.Levels;
-                            foreach (var lvl in lvls)
-                            {
-                                var mems = lvl.GetMembers(0, 2);
-                                foreach (var mem in mems)
-                                {
-                                    try
-                                    {
-                                        String description = mem.Description;
-                                        Assert.IsNotNullOrEmpty(description);
-                                        return;
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        Assert.Fail(ex.ToString());
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            else
-                Assert.Inconclusive("No connection found for test");
         }
 
         [Test]
         public void FetchPropertyMemberKey()
         {
-            if (connection != null && connection.State != ConnectionState.Closed)
+            foreach (DictionaryEntry entry in adoConnections)
             {
-                foreach (var cube in connection.Cubes)
+                AdomdConnection connection = (AdomdConnection)entry.Value;
+                if (connection != null && connection.State != ConnectionState.Closed)
                 {
-                    var dims = cube.Dimensions;
-                    foreach (var dim in dims)
+                    foreach (var cube in connection.Cubes)
                     {
-                        var hies = dim.Hierarchies;
-                        foreach (var hie in hies)
+                        var dims = cube.Dimensions;
+                        foreach (var dim in dims)
                         {
-                            var lvls = hie.Levels;
-                            foreach (var lvl in lvls)
+                            var hies = dim.Hierarchies;
+                            foreach (var hie in hies)
                             {
-                                var mems = lvl.GetMembers(0, 2);
-                                foreach (var mem in mems)
+                                var lvls = hie.Levels;
+                                foreach (var lvl in lvls)
                                 {
-                                    try
+                                    var mems = lvl.GetMembers(0, 2);
+                                    foreach (var mem in mems)
                                     {
-                                        mem.FetchAllProperties();
-                                        var property = mem.Properties["MEMBER_KEY"];
-                                        Assert.IsNotNullOrEmpty(property.ToString());
-                                        return;
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        Assert.Fail(ex.ToString());
+                                        try
+                                        {
+                                            mem.FetchAllProperties();
+                                            var property = mem.Properties["MEMBER_KEY"];
+                                            Assert.IsNotNullOrEmpty(property.ToString());
+                                            return;
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Assert.Fail(ex.ToString());
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
+                else
+                    Assert.Inconclusive("No connection found for test " +
+                                    connection.ConnectionString);
             }
-            else
-                Assert.Inconclusive("No connection found for test");
         }
 
 
         [Test]
         public void FetchPropertyMemberOrdinal()
         {
-            if (connection != null && connection.State != ConnectionState.Closed)
+            foreach (DictionaryEntry entry in adoConnections)
             {
-                foreach (var cube in connection.Cubes)
+                AdomdConnection connection = (AdomdConnection)entry.Value;
+                if (connection != null && connection.State != ConnectionState.Closed)
                 {
-                    var dims = cube.Dimensions;
-                    foreach (var dim in dims)
+                    foreach (var cube in connection.Cubes)
                     {
-                        var hies = dim.Hierarchies;
-                        foreach (var hie in hies)
+                        var dims = cube.Dimensions;
+                        foreach (var dim in dims)
                         {
-                            var lvls = hie.Levels;
-                            foreach (var lvl in lvls)
+                            var hies = dim.Hierarchies;
+                            foreach (var hie in hies)
                             {
-                                var mems = lvl.GetMembers(0, 2);
-                                foreach (var mem in mems)
+                                var lvls = hie.Levels;
+                                foreach (var lvl in lvls)
                                 {
-                                    try
+                                    var mems = lvl.GetMembers(0, 2);
+                                    foreach (var mem in mems)
                                     {
-                                        mem.FetchAllProperties();
-                                        var property = mem.Properties["MEMBER_ORDINAL"];
-                                        Assert.IsNotNullOrEmpty(property.ToString());
-                                        return;
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        Assert.Fail(ex.ToString());
+                                        try
+                                        {
+                                            mem.FetchAllProperties();
+                                            var property = mem.Properties["MEMBER_ORDINAL"];
+                                            Assert.IsNotNullOrEmpty(property.ToString());
+                                            return;
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Assert.Fail(ex.ToString());
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
-             }
-            else
-                Assert.Inconclusive("No connection found for test");
+                else
+                    Assert.Inconclusive("No connection found for test " +
+                                    connection.ConnectionString);
+            }
         }
 
         [Test]
         public void FetchPropertyExpression()
         {
-            if (connection != null && connection.State != ConnectionState.Closed)
+            foreach (DictionaryEntry entry in adoConnections)
             {
-                foreach (var cube in connection.Cubes)
+                AdomdConnection connection = (AdomdConnection)entry.Value;
+                if (connection != null && connection.State != ConnectionState.Closed)
                 {
-                    var dims = cube.Dimensions;
-                    foreach (var dim in dims)
+                    foreach (var cube in connection.Cubes)
                     {
-                        var hies = dim.Hierarchies;
-                        foreach (var hie in hies)
+                        var dims = cube.Dimensions;
+                        foreach (var dim in dims)
                         {
-                            var lvls = hie.Levels;
-                            foreach (var lvl in lvls)
+                            var hies = dim.Hierarchies;
+                            foreach (var hie in hies)
                             {
-                                var mems = lvl.GetMembers(0, 2);
-                                foreach (var mem in mems)
+                                var lvls = hie.Levels;
+                                foreach (var lvl in lvls)
                                 {
-                                    try
+                                    var mems = lvl.GetMembers(0, 2);
+                                    foreach (var mem in mems)
                                     {
-                                        mem.FetchAllProperties();
-                                        var property = mem.Properties["EXPRESSION"];
-                                        Assert.IsNotNullOrEmpty(property.ToString());
-                                        return;
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        Assert.Fail(ex.ToString());
+                                        try
+                                        {
+                                            mem.FetchAllProperties();
+                                            var property = mem.Properties["EXPRESSION"];
+                                            Assert.IsNotNullOrEmpty(property.ToString());
+                                            return;
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Assert.Fail(ex.ToString());
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
+                else
+                    Assert.Inconclusive("No connection found for test " +
+                                    connection.ConnectionString);
             }
-            else
-                Assert.Inconclusive("No connection found for test");
         }
     }
 }

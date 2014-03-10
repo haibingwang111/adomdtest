@@ -1,6 +1,7 @@
 ﻿using Microsoft.AnalysisServices.AdomdClient;
 using NUnit.Framework;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,12 +17,15 @@ namespace AdomdTests
         {
             try
             {
-                Console.WriteLine("Testing Connection");
+                Console.WriteLine("Testing Connections");
 
-                AdomdConnection conn = new AdomdConnection(connectionString);
-                conn.Open();
-                Assert.AreEqual(System.Data.ConnectionState.Open, conn.State);
-                Assert.AreNotEqual(conn, null);
+                foreach (DictionaryEntry entry in connectionsStr)
+                {
+                    AdomdConnection conn = new AdomdConnection((String)entry.Value);
+                    conn.Open();
+                    Assert.AreEqual(System.Data.ConnectionState.Open, conn.State);
+                    Assert.AreNotEqual(conn, null);
+                }
             }
             catch (Exception ex)
             {
@@ -42,13 +46,15 @@ namespace AdomdTests
         {
             try
             {
-                Console.WriteLine("Testing Disconnect");
-
-                AdomdConnection conn = new AdomdConnection(connectionString);
-                conn.Open();
-                Assert.AreEqual(System.Data.ConnectionState.Open, conn.State);
-                conn.Close(true);
-                Assert.AreEqual(System.Data.ConnectionState.Closed, conn.State);
+                Console.WriteLine("Testing Disconnections");
+                foreach (DictionaryEntry entry in connectionsStr)
+                {
+                    AdomdConnection conn = new AdomdConnection((String)entry.Value);
+                    conn.Open();
+                    Assert.AreEqual(System.Data.ConnectionState.Open, conn.State);
+                    conn.Close(true);
+                    Assert.AreEqual(System.Data.ConnectionState.Closed, conn.State);
+                }
             }
             catch (Exception ex)
             {

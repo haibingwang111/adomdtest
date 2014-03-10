@@ -1,6 +1,7 @@
 ﻿using Microsoft.AnalysisServices.AdomdClient;
 using NUnit.Framework;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -15,47 +16,60 @@ namespace AdomdTests
         [Test]
         public void FetchAllCubes()
         {
-            if (connection != null && connection.State != ConnectionState.Closed)
+            foreach (DictionaryEntry entry in adoConnections)
             {
-                var cubes = connection.Cubes;
+                AdomdConnection connection = (AdomdConnection)entry.Value;
 
-                if (cubes.Count == 0)
-                    Assert.Fail("Cubes can't be equal to 0.");
+                Console.WriteLine("Testing Cube for connection " + 
+                    connection.ConnectionString);
+                if (connection != null && connection.State != ConnectionState.Closed)
+                {
+                    var cubes = connection.Cubes;
+
+                    if (cubes.Count == 0)
+                        Assert.Fail("Cubes can't be equal to 0.");
+                }
+                else
+                    Assert.Inconclusive("No connection found for test " + 
+                        connection.ConnectionString);
             }
-            else
-                Assert.Inconclusive("No connection found for test");
         }
 
         [Test]
         public void GetSchemaObjectTypeHierchy()
         {
-            if (connection != null && connection.State != ConnectionState.Closed)
+            foreach (DictionaryEntry entry in adoConnections)
             {
-                var cubes = connection.Cubes;
+                AdomdConnection connection = (AdomdConnection)entry.Value;
 
-                if (cubes.Count > 0)
+                Console.WriteLine("Testing GetSchemaObjectTypeHierchy for connection " +
+                    connection.ConnectionString);
+                if (connection != null && connection.State != ConnectionState.Closed)
                 {
-                    var dimensions = cubes[0].Dimensions;
+                    var cubes = connection.Cubes;
 
-                    if (dimensions.Count > 0)
+                    if (cubes.Count > 0)
                     {
-                        foreach(Dimension dim in dimensions)
-                        {
-                            var hierchies = dim.Hierarchies;
+                        var dimensions = cubes[0].Dimensions;
 
-                            foreach (Hierarchy hier in hierchies)
+                        if (dimensions.Count > 0)
+                        {
+                            foreach (Dimension dim in dimensions)
                             {
-                                Console.WriteLine("Testing Hierchy " + hier.UniqueName);
-                                cubes[0].GetSchemaObject(SchemaObjectType.ObjectTypeHierarchy, hier.UniqueName);
+                                var hierchies = dim.Hierarchies;
+
+                                foreach (Hierarchy hier in hierchies)
+                                {
+                                    Console.WriteLine("Testing Hierchy " + hier.UniqueName);
+                                    cubes[0].GetSchemaObject(SchemaObjectType.ObjectTypeHierarchy, hier.UniqueName);
+                                }
                             }
                         }
-                        
                     }
                 }
-            }
-            else
-            {
-                Assert.Inconclusive("No connection found for test");
+                else
+                    Assert.Inconclusive("No connection found for test " +
+                            connection.ConnectionString);
             }
         }
     }

@@ -11,8 +11,8 @@ namespace AdomdTests
         static void Main(string[] args)
         {
             QueryTests q = new QueryTests();
-            q.initConnection();
-            q.CellSet();
+            q.initConnections();
+            q.MdxQuery();
         }
     }
 }
